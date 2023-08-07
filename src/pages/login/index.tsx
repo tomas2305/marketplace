@@ -8,6 +8,8 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useNotificationContext } from "../../context/notification.context";
+import { LoginValidate } from "../../utils/validateForm";
 
 type LoginType = {
   username: string,
@@ -20,13 +22,20 @@ export const LoginPage: React.FC<{}> = () => {
     password: ""
   });
 
+  const {getError, getSuccess} = useNotificationContext();
+
+
   const handleChange = ({target:{name, value}} : React.ChangeEvent<HTMLInputElement>) => {
     setLoginData({...loginData, [name]:value});
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log(loginData);
+    LoginValidate.validate(loginData).then(() => {
+      getSuccess(JSON.stringify(loginData));
+    }).catch((err) => {
+      getError(err.message);
+    })
   }
 
   return (
@@ -50,7 +59,6 @@ export const LoginPage: React.FC<{}> = () => {
                 name="username"
                 type="email"
                 sx={{ mt: 2, mb: 1.5 }}
-                required
                 onChange={handleChange}
               />
               <TextField
@@ -59,7 +67,6 @@ export const LoginPage: React.FC<{}> = () => {
                 name="password"
                 label="Password"
                 sx={{ mt: 1.5, mb: 1.5 }}
-                required
                 onChange={handleChange}
               />
               <Button

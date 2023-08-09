@@ -8,8 +8,10 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 type CardProps = {
+  id: number,
   image: string;
   name: string;
   species: string;
@@ -17,11 +19,15 @@ type CardProps = {
 };
 
 export const CardComponent: React.FC<CardProps> = ({
+  id,
   image,
   name,
   species,
   status,
 }) => {
+
+  const navigate = useNavigate();
+
   return (
     <Card >
       <CardMedia
@@ -37,7 +43,7 @@ export const CardComponent: React.FC<CardProps> = ({
         <Typography>Estado: {status}</Typography>
       </CardContent>
       <CardActions>
-        <Button variant="contained" size="small">
+        <Button onClick={() => navigate(`/character/${id}`)} variant="contained" size="small">
           Learn More
         </Button>
       </CardActions>

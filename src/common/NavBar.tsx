@@ -1,22 +1,32 @@
+import React from 'react';
 import {
   AppBar,
+  Badge,
   Box,
-  Toolbar,
+  Button,
   Container,
   Grid,
-  Typography,
-  Button,
+  IconButton,
   Stack,
-  Grow,
-} from "@mui/material";
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+  Toolbar,
+  Typography,
+} from '@mui/material';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { useNavigate } from 'react-router-dom';
+import { CartComponent } from './Cart';
+import { useAppSelector } from '../redux/hooks';
 
 export const NavBar: React.FC<{}> = () => {
   const navigate = useNavigate();
+  const items = useAppSelector((state) => state.cartReducer);
+  const [open, setOpen] = React.useState<boolean>(false);
+
+  const handleStateViewDrawer = () => {
+    setOpen((state) => !state);
+  };
 
   return (
-    <Box sx={{ flexGrow: 1 }} mb={2}>
+    <Box sx={{ flexGrow: 1 }}>
       <AppBar position="sticky">
         <Toolbar>
           <Container maxWidth="xl">
@@ -27,24 +37,32 @@ export const NavBar: React.FC<{}> = () => {
               alignItems="center"
             >
               <Grid item>
-                <Grow in timeout={1500}>
-                  <Typography sx={{cursor:"pointer"}} onClick={() => navigate("/")}>
-                    MarketPlace
-                  </Typography>
-                </Grow>
+                <Typography>Codrr</Typography>
               </Grid>
               <Grid item>
                 <Stack direction="row" spacing={2}>
-                  <Link to="/login">
-                    <Button variant="contained"> Login</Button>
-                  </Link>
-                  <Button variant="outlined"> Register</Button>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleStateViewDrawer()}
+                  >
+                    <Badge color="error" badgeContent={items.length}>
+                      <ShoppingCartOutlinedIcon />
+                    </Badge>
+                  </IconButton>
+                  <Button variant="contained" onClick={() => navigate('login')}>
+                    Login
+                  </Button>
+                  <Button variant="outlined">Register</Button>
                 </Stack>
               </Grid>
             </Grid>
           </Container>
         </Toolbar>
       </AppBar>
+      <CartComponent
+        open={open}
+        handleStateViewDrawer={handleStateViewDrawer}
+      />
     </Box>
   );
 };

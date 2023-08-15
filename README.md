@@ -4,7 +4,7 @@ Marketplace de Rick & Morty hecho con React Typescript. Tutorial de codrr
 
 ## Deploy con firebase
 
-https://marketplace-rick-n-morty.web.app/
+https://marketplace-rick-n-morty2.web.app/
 
 ## Librerias Usadas
 
